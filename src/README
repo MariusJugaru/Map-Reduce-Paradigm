@@ -1,0 +1,15 @@
+Pentru implementarea mea am folosit mai multe hashtable-uri si niste liste de pointeri pentru sortare.
+
+Am creat o structura de date unde am stocat informatii despre fisierele de intrare, precum numarul de fisiere, path/to/file, fisierul care urmeaza a fi prelucrat.
+In aceasta structura am adaugat si elemente de sincronizare precum mutex, semafor si bariera.
+Aceasta structura am introdus-o intr-o alta structura de tip argument(ThreadData) pentru thread-uri, pentru a face usor comunicarea intre acestea.
+Structura de tip argument mai contine o lista de hashtables care o sa fie completate de mapperi si folosita de reducers.
+Am folosit structura de date de intrare ca un tip de coada pentru mappers, fiecare thread liber luand un fisier si deschizandu-l, atata timp cat mai existau fisiere disponibile.
+Fiecare mapper introducea cuvintele din fisier intr-un hashtable propriu.
+
+Atunci cand toate thread-urile de tip mapper au terminat prelucrarea, incepe prelucrarea de la reducers.
+Fiecare reducer isi atribuie sincronizat o partitie ('a', 'b'... 'z') si creaza un hashtable folosind numai cuvinte care incep cu acea litera din toate hashtable-urile provenite de la mappers.
+Pentru valorile fiecarei key am folosit o lista inlantuita in care pastrez ordonat documentele in care se afla acel cuvant.
+Dupa ce am terminat de introdus datele, "liniarizez" hashtable-ul printr-un vector de pointeri care contine toti item-i din hashtable.
+Pe acest vector pot sa aplic qsort si sa obtin ordinea precizata in enunt si dupa pot scrie in fisier.
+Cand am terminat cu o partitie, thread-ul reducer verifica daca mai poate lua alta partitie, altfel isi termina rularea.
