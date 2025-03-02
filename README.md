@@ -3,7 +3,7 @@
 ## Overview
 This project implements a **Map-Reduce** model similar to the one used by **Google** for processing large sets of documents in distributed systems.
 The goal is to efficiently parallelize and distribute tasks across multiple processors.
-Map-Redice is a parallel model for processing large-scale documents.
+Map-Reduce is a parallel model for processing large-scale documents.
 
 ## How it works
 - Uses **Mappers** to extract relevant data from documents.
